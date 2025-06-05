@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",                // Node 20 suporta ES2022+
+    "module": "CommonJS",              // ou "ESNext" se for usar ES Modules
+    "moduleResolution": "node",
+    "lib": ["ES2022"],
+    "allowJs": false,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "noImplicitAny": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "outDir": "dist"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
