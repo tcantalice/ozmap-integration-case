@@ -13,7 +13,8 @@
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --write \"src/**/*.ts\"",
-    "build": "tsc -p tsconfig.build.json"
+    "build": "tsc -p tsconfig.build.json",
+    "api:mock": "json-server --watch db.json --port 4000"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
@@ -30,7 +31,8 @@
     "husky": "^9.1.7",
     "prettier": "^3.5.3",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.33.1"
+    "typescript-eslint": "^8.33.1",
+    "json-server": "^1.0.0-beta.3"
   },
   "config": {
     "commitizen": {
@@ -38,6 +40,8 @@
     }
   },
   "dependencies": {
-    "@ozmap/ozmap-sdk": "^1.1.0"
+    "@ozmap/ozmap-sdk": "^1.1.0",
+    "axios": "^1.9.0",
+    "pino": "^9.7.0"
   }
 }
