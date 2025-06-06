@@ -1,9 +1,5 @@
-import { Box, BoxType, Pole } from '../../entities/box.entity';
+import { OZMapBoxInputData, OZMapBoxOutputData } from '../data/ozmap-box.data';
 
 export default interface OZMapGateway {
-  createBoxResource(box: Box): Promise<Box>;
-
-  createBoxTypeResource(boxType: BoxType): Promise<BoxType>;
-
-  createPoleResource(pole: Pole): Promise<Pole>;
+  createBoxResource(data: OZMapBoxInputData): Promise<OZMapBoxOutputData>;
 }
