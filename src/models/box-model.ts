@@ -1,127 +1,68 @@
-export class BoxType {
-  private __ozmapId: string | null;
+import { BaseSynchronizable } from './synchronizable';
 
-  private __synchronizedAt: Date | null;
-
+export class BoxType extends BaseSynchronizable {
   constructor(public readonly name: string) {
-    this.__ozmapId = null;
-    this.__synchronizedAt = null;
+    super();
   }
 
-  synchronize(id: string): void;
-  synchronize(id: string, timestamp: Date): void;
+  equalsTo(other: any): boolean {
+    let result: boolean = false;
 
-  synchronize(id: string, timestamp?: Date): void {
-    this.setOzmapId(id);
+    if (other instanceof BoxType) {
+      result =
+        other.isSynchronized() && this.isSynchronized()
+          ? other.synchId === this.synchId
+          : other.name === this.name;
+    }
 
-    this.setSynchronizedAt(timestamp || new Date());
-  }
-
-  private setOzmapId(id: string) {
-    this.__ozmapId = this.__ozmapId || id;
-  }
-
-  private setSynchronizedAt(timestamp: Date) {
-    this.__synchronizedAt = this.__synchronizedAt || timestamp;
-  }
-
-  isCreated(): boolean {
-    return Boolean(this.__ozmapId);
-  }
-
-  public get synchId(): string | null {
-    return this.__ozmapId;
-  }
-
-  public get syncrhonizedAt(): Date | null {
-    return this.__synchronizedAt;
+    return result;
   }
 }
 
-export class Pole {
-  private __ozmapId: string | null;
-
-  private __synchronizedAt: Date | null;
-
+export class Pole extends BaseSynchronizable {
   constructor(
     public readonly lat: number,
     public readonly lng: number,
   ) {
-    this.__ozmapId = null;
-    this.__synchronizedAt = null;
+    super();
   }
 
-  synchronize(id: string): void;
-  synchronize(id: string, timestamp: Date): void;
+  equalsTo(other: any): boolean {
+    let result: boolean = false;
 
-  synchronize(id: string, timestamp?: Date): void {
-    this.setOzmapId(id);
+    if (other instanceof Pole) {
+      if (other.isSynchronized() && this.isSynchronized()) {
+        result = other.synchId === this.synchId;
+      } else {
+        result = other.lat === this.lat && other.lng === this.lng;
+      }
+    }
 
-    this.setSynchronizedAt(timestamp || new Date());
-  }
-
-  private setOzmapId(id: string) {
-    this.__ozmapId = this.__ozmapId || this.__ozmapId;
-  }
-
-  private setSynchronizedAt(timestamp: Date) {
-    this.__synchronizedAt = this.__synchronizedAt || timestamp;
-  }
-
-  isCreated(): boolean {
-    return Boolean(this.__ozmapId);
-  }
-
-  public get synchId(): string | null {
-    return this.__ozmapId;
-  }
-
-  public get syncrhonizedAt(): Date | null {
-    return this.__synchronizedAt;
+    return result;
   }
 }
 
-export class Box {
-  private __ozmapId: string | null;
-
-  private __synchronizedAt: Date | null;
-
+export class Box extends BaseSynchronizable {
   constructor(
     public readonly id: number,
-    public readonly code: string,
     public readonly type: BoxType,
     public readonly pole: Pole,
   ) {
-    this.__ozmapId = null;
-    this.__synchronizedAt = null;
+    super();
   }
 
-  synchronize(id: string): void;
-  synchronize(id: string, timestamp: Date): void;
+  equalsTo(other: any) {
+    let result: boolean = false;
 
-  synchronize(id: string, timestamp?: Date): void {
-    this.setOzmapId(id);
+    if (other instanceof Box) {
+      if (other.isSynchronized() && this.isSynchronized()) {
+        result = other.synchId === this.synchId;
+      } else {
+        result =
+          other.id === this.id && other.type.equalsTo(this.type) && other.pole.equalsTo(this.pole);
+      }
+    }
 
-    this.setSynchronizedAt(timestamp || new Date());
-  }
-
-  private setOzmapId(id: string) {
-    this.__ozmapId = this.__ozmapId || this.__ozmapId;
-  }
-
-  private setSynchronizedAt(timestamp: Date) {
-    this.__synchronizedAt = this.__synchronizedAt || timestamp;
-  }
-
-  isCreated(): boolean {
-    return Boolean(this.__ozmapId);
-  }
-
-  public get synchId(): string | null {
-    return this.__ozmapId;
-  }
-
-  public get syncrhonizedAt(): Date | null {
-    return this.__synchronizedAt;
+    return result;
   }
 }
