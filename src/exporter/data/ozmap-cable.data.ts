@@ -1,13 +1,16 @@
 export interface OZMapCableInputData {
   project: string;
+  name: string;
   type: string;
   boxA?: string;
-  boxB?: String;
+  boxB?: string;
   poles: {
     lat: number;
     lng: number;
   }[];
   externalId: any;
+  hierarchyLevel: number;
+  implanted: boolean;
 }
 
 export interface OZMapCableOutputData {
