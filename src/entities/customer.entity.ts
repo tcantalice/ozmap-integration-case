@@ -32,4 +32,12 @@ export default class Customer extends BaseSynchronizable {
   usedCable(): DropCable | null {
     return this.__dropCable;
   }
+
+  isSame(other: Customer): boolean {
+    return this.id === other.id;
+  }
+
+  hasDifference(other: Customer): boolean {
+    return this.name !== other.name || this.address !== other.address;
+  }
 }
