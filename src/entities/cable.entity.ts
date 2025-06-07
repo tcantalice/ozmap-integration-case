@@ -49,6 +49,8 @@ export default class Cable extends BaseSynchronizable {
     super();
 
     this.__path = new CablePath();
+    this.__boxA = null;
+    this.__boxB = null;
   }
 
   addPoint(latitude: number, longitude: number) {
