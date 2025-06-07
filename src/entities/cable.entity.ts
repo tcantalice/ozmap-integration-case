@@ -1,3 +1,4 @@
+import { Box } from '@ozmap/ozmap-sdk';
 import { BaseSynchronizable } from './synchronizable';
 import { Location } from './vo/location';
 
@@ -42,6 +43,8 @@ export default class Cable extends BaseSynchronizable {
     public readonly id: number,
     public readonly name: string,
     public readonly capacity: number,
+    public readonly connectionA: Box,
+    public readonly connectionB: Box,
   ) {
     super();
 
