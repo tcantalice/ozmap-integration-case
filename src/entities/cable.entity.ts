@@ -1,4 +1,4 @@
-import { Box } from '@ozmap/ozmap-sdk';
+import { Box } from './box.entity';
 import { BaseSynchronizable } from './synchronizable';
 import { Location } from './vo/location';
 
