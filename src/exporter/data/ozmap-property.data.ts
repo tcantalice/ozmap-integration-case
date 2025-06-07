@@ -1,4 +1,4 @@
-export interface OZMapPropertyInput {
+export interface OZMapPropertyInputData {
   address: string;
   box?: string;
   drop?: string;
@@ -8,7 +8,7 @@ export interface OZMapPropertyInput {
   };
 }
 
-export interface OZMapPropertyOutput {
+export interface OZMapPropertyOutputData {
   id: string;
   client: string;
 }
