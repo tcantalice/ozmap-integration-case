@@ -13,6 +13,26 @@ class CablePath {
   get locations(): Location[] {
     return this.__locations;
   }
+
+  equalsTo(other: any) {
+    let result: boolean = false;
+
+    if (other instanceof CablePath) {
+      const hasSameSize = other.locations.length === this.locations.length;
+
+      result =
+        hasSameSize &&
+        this.locations.filter((ref: Location) => {
+          return other.locations.find((curr: Location) => curr.equalsTo(ref)) !== undefined;
+        }).length === this.locations.length;
+    }
+
+    return result;
+  }
+
+  get size(): number {
+    return this.locations.length;
+  }
 }
 
 export default class Cable extends BaseSynchronizable {
