@@ -1,8 +1,11 @@
 export interface OZMapPropertyInputData {
+  project: string;
   address: string;
   box?: string;
   drop?: string;
   client: {
+    externalId: any;
+    implanted: boolean;
     code: string;
     name: string;
   };
@@ -10,5 +13,8 @@ export interface OZMapPropertyInputData {
 
 export interface OZMapPropertyOutputData {
   id: string;
-  client: string;
+  client: {
+    id: string;
+    code: string;
+  };
 }
