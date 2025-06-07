@@ -3,7 +3,6 @@ import DropCable from './drop-cable.entity';
 import { BaseSynchronizable } from './synchronizable';
 
 export default class Customer extends BaseSynchronizable {
-  private __connectedBox: Box | null;
   private __dropCable: DropCable | null;
 
   constructor(
@@ -13,16 +12,11 @@ export default class Customer extends BaseSynchronizable {
   ) {
     super();
 
-    this.__connectedBox = null;
     this.__dropCable = null;
   }
 
-  connectTo(box: Box): void {
-    this.__connectedBox = box;
-  }
-
   connectedTo(): Box | null {
-    return this.__connectedBox;
+    return this.__dropCable?.box ?? null;
   }
 
   connectedBy(cable: DropCable): void {
