@@ -1,4 +1,5 @@
 import { BaseSynchronizable } from './synchronizable';
+import { Location } from './vo/location';
 
 export class BoxType extends BaseSynchronizable {
   constructor(public readonly name: string) {
@@ -19,50 +20,21 @@ export class BoxType extends BaseSynchronizable {
   }
 }
 
-export class Pole extends BaseSynchronizable {
-  constructor(
-    public readonly lat: number,
-    public readonly lng: number,
-  ) {
-    super();
-  }
-
-  equalsTo(other: any): boolean {
-    let result: boolean = false;
-
-    if (other instanceof Pole) {
-      if (other.isSynchronized() && this.isSynchronized()) {
-        result = other.synchId === this.synchId;
-      } else {
-        result = other.lat === this.lat && other.lng === this.lng;
-      }
-    }
-
-    return result;
-  }
-}
-
 export class Box extends BaseSynchronizable {
   constructor(
     public readonly id: number,
-    public readonly type: BoxType,
-    public readonly pole: Pole,
+    public readonly name: string,
+    public readonly type: string,
+    public readonly loc: Location,
   ) {
     super();
   }
 
-  equalsTo(other: any) {
-    let result: boolean = false;
+  isSame(other: Box) {
+    return this.id === other.id;
+  }
 
-    if (other instanceof Box) {
-      if (other.isSynchronized() && this.isSynchronized()) {
-        result = other.synchId === this.synchId;
-      } else {
-        result =
-          other.id === this.id && other.type.equalsTo(this.type) && other.pole.equalsTo(this.pole);
-      }
-    }
-
-    return result;
+  hasDifference(other: Box) {
+    return this.name !== other.name || !this.loc.equalsTo(other.loc) || this.type !== other.type;
   }
 }
