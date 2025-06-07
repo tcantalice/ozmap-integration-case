@@ -1,3 +1,4 @@
+import { Box } from './box.entity';
 import { BaseSynchronizable } from './synchronizable';
 import { Location } from './vo/location';
 
@@ -37,6 +38,8 @@ class CablePath {
 
 export default class Cable extends BaseSynchronizable {
   private readonly __path: CablePath;
+  private __boxA: Box | null;
+  private __boxB: Box | null;
 
   constructor(
     public readonly id: number,
@@ -52,8 +55,24 @@ export default class Cable extends BaseSynchronizable {
     this.__path.addPoint(new Location(latitude, longitude));
   }
 
+  connectToFirstBox(box: Box): void {
+    this.__boxA = box;
+  }
+
+  connectToSecondBox(box: Box): void {
+    this.__boxB = box;
+  }
+
   get path(): CablePath {
     return this.__path;
+  }
+
+  get firstConnection(): Box | null {
+    return this.__boxA;
+  }
+
+  get secondConnection(): Box | null {
+    return this.__boxB;
   }
 
   isSame(other: Cable): boolean {
