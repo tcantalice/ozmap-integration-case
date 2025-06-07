@@ -5,4 +5,6 @@ export default interface OZMapGateway {
   createBoxResource(data: OZMapBoxInputData): Promise<OZMapBoxOutputData>;
 
   createProperty(data: OZMapPropertyInput): Promise<OZMapPropertyOutput>;
+
+  createCable(data: any): Promise<any>;
 }
