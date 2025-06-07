@@ -55,4 +55,16 @@ export default class Cable extends BaseSynchronizable {
   get path(): CablePath {
     return this.__path;
   }
+
+  isSame(other: Cable): boolean {
+    return this.id === other.id;
+  }
+
+  hasDifference(other: Cable): boolean {
+    return (
+      this.name !== other.name ||
+      this.capacity !== other.capacity ||
+      !this.path.equalsTo(other.path)
+    );
+  }
 }
