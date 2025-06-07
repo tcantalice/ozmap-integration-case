@@ -1,4 +1,5 @@
 import { OZMapBoxInputData, OZMapBoxOutputData } from '../data/ozmap-box.data';
+import { OZMapCableInputData, OZMapCableOutputData } from '../data/ozmap-cable.data';
 import { OZMapPropertyInputData, OZMapPropertyOutputData } from '../data/ozmap-property.data';
 
 export default interface OZMapGateway {
@@ -6,5 +7,5 @@ export default interface OZMapGateway {
 
   createProperty(data: OZMapPropertyInputData): Promise<OZMapPropertyOutputData>;
 
-  createCable(data: any): Promise<any>;
+  createCable(data: OZMapCableInputData): Promise<OZMapCableOutputData>;
 }
