@@ -1,7 +1,8 @@
-import OZMapSDK, { Box as OZBox, Cable as OZCable } from '@ozmap/ozmap-sdk';
+import OZMapSDK, { Box as OZBox, Cable as OZCable, Property as OZProperty } from '@ozmap/ozmap-sdk';
 import OZMapGateway from '../contracts/ozmap-gateway';
 import { OZMapBoxInputData, OZMapBoxOutputData } from '../data/ozmap-box.data';
 import { OZMapCableInputData, OZMapCableOutputData } from '../data/ozmap-cable.data';
+import { OZMapPropertyInputData, OZMapPropertyOutputData } from '../data/ozmap-property.data';
 
 export default class OZMapSDKGateway implements OZMapGateway {
   private readonly sdk: OZMapSDK;
@@ -38,5 +39,27 @@ export default class OZMapSDKGateway implements OZMapGateway {
     });
 
     return { id: createdCable.id as string };
+  }
+
+  async createProperty(data: OZMapPropertyInputData): Promise<OZMapPropertyOutputData> {
+    const createdProperty: OZProperty = this.sdk.property.create({
+      project: data.project,
+      address: data.address,
+      box: data.box,
+      client: {
+        code: data.client.code,
+        name: data.client.name,
+        external_id: data.client.externalId,
+        implanted: data.client.implanted,
+      },
+    });
+
+    return {
+      id: createdProperty.id as string,
+      client: {
+        id: createdProperty.client.id as string,
+        code: data.client.code,
+      },
+    };
   }
 }
