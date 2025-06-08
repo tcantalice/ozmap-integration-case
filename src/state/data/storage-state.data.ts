@@ -1,8 +1,12 @@
-import { SynchStatus } from '../../enums/synch-status.enum';
+import { SyncStatus } from '../../enums/sync-status.enum';
+
+export interface SyncStorageState {
+  syncId?: string;
+  lastAttemptSync: Date;
+  lastSyncStatus: SyncStatus;
+}
 
 export default interface StorageState<Entity> {
-  value: Entity;
-  synchId?: string;
-  synchAt?: Date;
-  synchStatus: SynchStatus;
+  data: Entity;
+  sync?: SyncStorageState;
 }
