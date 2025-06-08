@@ -1,9 +1,4 @@
-import {
-  ISPBoxData,
-  ISPCableData,
-  ISPCustomerData,
-  ISPDropCableData,
-} from '../isp-integration-data';
+import { ISPBoxData, ISPCableData, ISPCustomerData, ISPDropCableData } from '../data';
 
 export default interface ISPServiceGateway {
   getBoxes(): Promise<ISPBoxData[]>;
