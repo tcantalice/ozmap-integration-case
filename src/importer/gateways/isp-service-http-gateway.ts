@@ -1,12 +1,7 @@
 import { Axios, AxiosResponse, isAxiosError } from 'axios';
 import { ClientRequest } from 'node:http';
 import ISPServiceGateway from '../contracts/isp-service-gateway';
-import {
-  ISPBoxData,
-  ISPCableData,
-  ISPCustomerData,
-  ISPDropCableData,
-} from '../isp-integration-data';
+import { ISPBoxData, ISPCableData, ISPCustomerData, ISPDropCableData } from '../data';
 
 class RequestError extends Error {
   constructor(
