@@ -719,7 +719,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
+"@types/node@npm:*, @types/node@npm:^22.15.30":
   version: 22.15.30
   resolution: "@types/node@npm:22.15.30"
   dependencies:
@@ -4101,6 +4101,7 @@ __metadata:
     "@commitlint/config-conventional": "npm:^19.8.1"
     "@eslint/js": "npm:^9.28.0"
     "@ozmap/ozmap-sdk": "npm:^1.1.0"
+    "@types/node": "npm:^22.15.30"
     "@types/typescript": "npm:^2.0.0"
     "@typescript-eslint/eslint-plugin": "npm:^8.33.1"
     "@typescript-eslint/parser": "npm:^8.33.1"
