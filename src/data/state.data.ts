@@ -1,4 +1,4 @@
-import { SynchStatus } from '../enums/sync-status.enum';
+import { SyncStatus } from '../enums/sync-status.enum';
 
 export interface State<Entity> {
   data: Entity;
@@ -6,6 +6,6 @@ export interface State<Entity> {
   sync?: {
     syncId?: string;
     lastAttemptSync: Date;
-    lastSyncStatus: SynchStatus;
+    lastSyncStatus: SyncStatus;
   };
 }
