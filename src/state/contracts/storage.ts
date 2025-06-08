@@ -1,7 +1,9 @@
-import StorageState from '../data/storage-state.data';
+import StorageState, { SyncStorageState } from '../data/storage-state.data';
 
 export default interface Storage<Entity> {
-  save(data: StorageState<Entity>): Promise<void>;
+  saveData(data: Entity): Promise<void>;
+
+  saveSync(id: number, sync: SyncStorageState): Promise<void>;
 
   findById(id: number): Promise<StorageState<Entity> | null>;
 }
