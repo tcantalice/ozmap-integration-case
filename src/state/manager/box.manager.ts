@@ -4,9 +4,7 @@ import { State } from '../contracts/state';
 import Storage from '../contracts/storage';
 
 export default class BoxManager implements Manager<Box> {
-  private boxStorage: Storage<Box>;
-
-  constructor() {}
+  constructor(private boxStorage: Storage<Box>) {}
 
   async handleState(entity: Box): Promise<State<Box>> {
     const state: State<Box> = {
