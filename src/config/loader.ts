@@ -4,7 +4,7 @@ import type { Config } from './types';
 import z from 'zod/v4';
 import { envConfigSchema } from './schemas';
 
-export const init = (): Config | never => {
+export const load = (): Config | never => {
   config();
 
   const result = envConfigSchema.safeParse(process.env);
