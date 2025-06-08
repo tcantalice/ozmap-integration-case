@@ -2,7 +2,7 @@ import { SyncStatus } from '../../enums/sync-status.enum';
 
 export interface SyncStorageState {
   syncId?: string;
-  lastAttemptSync: Date;
+  lastAttemptSync?: Date;
   lastSyncStatus: SyncStatus;
 }
 
