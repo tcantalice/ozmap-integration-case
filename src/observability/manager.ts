@@ -3,13 +3,21 @@ import { Logger } from './contracts/logger';
 import FileLogger from './logger/file-logger';
 
 export default class ObservabilityManager {
+  private static __instance: ObservabilityManager;
+
   private __logger: Logger;
 
   constructor(config: Config) {
     this.__logger = new FileLogger(config.log);
   }
 
-  get logger(): Logger {
-    return this.__logger;
+  static init(config: Config) {
+    if (!ObservabilityManager.__instance) {
+      ObservabilityManager.__instance = new ObservabilityManager(config);
+    }
+  }
+
+  static logger(): Logger {
+    return ObservabilityManager.__instance.__logger;
   }
 }
