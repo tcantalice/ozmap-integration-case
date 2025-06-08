@@ -79,7 +79,7 @@ export default class ISPImporter {
     dropCables: DropCable[],
   ): Customer[] {
     return data.map((customer: ISPCustomerData) => {
-      const converted = new Customer(customer.id, customer.name, customer.address),
+      const converted = new Customer(customer.id, customer.code, customer.name, customer.address),
         dropCable = dropCables.find((cable) => cable.box.id === customer.box_id)!;
 
       converted.connectedBy(dropCable);
