@@ -1,4 +1,4 @@
-export class Location {
+export default class Location {
   constructor(
     public readonly lat: number,
     public readonly lng: number,

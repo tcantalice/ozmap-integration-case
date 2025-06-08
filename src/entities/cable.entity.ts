@@ -1,6 +1,6 @@
-import { Box } from './box.entity';
+import Box from './box.entity';
 import { BaseSynchronizable } from './synchronizable';
-import { Location } from './vo/location';
+import Location from './vo/location';
 
 class CablePath {
   private readonly __locations: Location[] = [];

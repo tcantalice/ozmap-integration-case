@@ -42,7 +42,7 @@ export default class OZMapSDKGateway implements OZMapGateway {
   }
 
   async createProperty(data: OZMapPropertyInputData): Promise<OZMapPropertyOutputData> {
-    const createdProperty: OZProperty = this.sdk.property.create({
+    const createdProperty: OZProperty = await this.sdk.property.create({
       project: data.project,
       address: data.address,
       box: data.box,

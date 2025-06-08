@@ -1,4 +1,4 @@
-import { Box } from './box.entity';
+import Box from './box.entity';
 import { BaseSynchronizable } from './synchronizable';
 
 export default class DropCable extends BaseSynchronizable {

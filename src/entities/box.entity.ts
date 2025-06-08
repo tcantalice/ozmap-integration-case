@@ -1,5 +1,5 @@
 import { BaseSynchronizable } from './synchronizable';
-import { Location } from './vo/location';
+import Location from './vo/location';
 
 export class BoxType extends BaseSynchronizable {
   constructor(public readonly name: string) {

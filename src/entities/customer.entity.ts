@@ -1,4 +1,4 @@
-import { Box } from './box.entity';
+import Box from './box.entity';
 import DropCable from './drop-cable.entity';
 import { BaseSynchronizable } from './synchronizable';
 
