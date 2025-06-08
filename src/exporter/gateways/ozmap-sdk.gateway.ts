@@ -1,8 +1,50 @@
 import OZMapSDK, { Box as OZBox, Cable as OZCable, Property as OZProperty } from '@ozmap/ozmap-sdk';
+import { isAxiosError } from 'axios';
+import { ClientRequest } from 'http';
 import OZMapGateway from '../contracts/ozmap-gateway';
 import { OZMapBoxInputData, OZMapBoxOutputData } from '../data/ozmap-box.data';
 import { OZMapCableInputData, OZMapCableOutputData } from '../data/ozmap-cable.data';
 import { OZMapPropertyInputData, OZMapPropertyOutputData } from '../data/ozmap-property.data';
+
+class RequestError extends Error {
+  constructor(
+    message: string,
+    cause: Error,
+    private data: Record<string, any>,
+  ) {
+    super(message, { cause });
+  }
+
+  getContext(): Record<string, any> {
+    return { data: this.data };
+  }
+}
+
+class ResponseError extends Error {
+  constructor(
+    message: string,
+    cause: Error,
+    private statusHttp: number,
+    private responseData: Record<string, any>,
+    private requestData: Record<string, any>,
+  ) {
+    super(message, { cause });
+  }
+
+  getContext(): Record<string, any> {
+    return {
+      status: this.statusHttp,
+      response: this.responseData,
+      request: this.requestData,
+    };
+  }
+}
+
+class UnknowIntegrationError extends Error {
+  constructor(message: string, cause: Error) {
+    super(message, { cause });
+  }
+}
 
 export default class OZMapSDKGateway implements OZMapGateway {
   private readonly sdk: OZMapSDK;
@@ -61,5 +103,35 @@ export default class OZMapSDKGateway implements OZMapGateway {
         code: data.client.code,
       },
     };
+  }
+
+  private handleError(err: any): never {
+    // Esse tratamento de erro foi feito com base no código construído
+    // no SDK, porém não garante um tratamento fiel aos possíveis erros
+
+    if (isAxiosError(err)) {
+      if (err.response) {
+        const response = err.response;
+        const request = err.request as ClientRequest;
+
+        throw new ResponseError(
+          'ISP data request not successful',
+          err,
+          response.status,
+          response.data as object,
+          { headers: request.getHeaders(), host: request.host, path: request.path },
+        );
+      } else if (err.request) {
+        const request = err.request as ClientRequest;
+
+        throw new RequestError('Attempt to request ISP failed', err, {
+          headers: request.getHeaders(),
+          host: request.host,
+          path: request.path,
+        });
+      }
+    }
+
+    throw new UnknowIntegrationError('An unknown error occurs during the integration attempt', err);
   }
 }
