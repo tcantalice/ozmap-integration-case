@@ -5,7 +5,7 @@ export interface State<Entity> {
   operation: 'created' | 'updated' | 'ignored';
   sync?: {
     syncId?: string;
-    lastAttemptSync: Date;
+    lastAttemptSync?: Date;
     lastSyncStatus: SyncStatus;
   };
 }
