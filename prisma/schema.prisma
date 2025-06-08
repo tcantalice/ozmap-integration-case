@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "generated/prisma"
 }
 
 datasource db {
@@ -19,32 +18,32 @@ type Location {
   longitude Float
 }
 
-type OZMapSych {
+type OZMapSync {
   ozmap_id String?
-  ozmap_last_synch_date DateTime?
-  ozmap_last_synch_situation SynchSituation
+  ozmap_last_sync_date DateTime?
+  ozmap_last_sync_situation SyncSituation
 }
 
-enum SynchSituation {
+enum SyncSituation {
   SUCCESS
   FAIL
 }
 
 model Box {
-  id String @id @default(uuid()) @map("_id")
+  id String @id @default(uuid()) @map("_id") @db.ObjectId
   isp_id BigInt @unique
   name String
   type String
   location Location
   created_at DateTime
   updated_at DateTime
-  synch OZMapSych?
+  synch OZMapSync?
 
   @@map("box")
 }
 
 model Cable {
-  id String @id @default(uuid()) @map("_id")
+  id String @id @default(uuid()) @map("_id") @db.ObjectId
   isp_id BigInt @unique
   name String
   paths Location[]
@@ -53,32 +52,32 @@ model Cable {
   boxes BigInt[]
   created_at DateTime
   updated_at DateTime
-  synch OZMapSych?
+  synch OZMapSync?
 
   @@map("cable")
 }
 
 model Customer {
-  id String @id @default(uuid()) @map("_id")
+  id String @id @default(uuid()) @map("_id") @db.ObjectId
   code String
   name String
   address String
   box BigInt
 
-  synch OZMapSych?
+  synch OZMapSync?
 
   @@map("customer")
 }
 
 model DropCable {
-  id String @id @default(uuid()) @map("_id")
+  id String @id @default(uuid()) @map("_id") @db.ObjectId
   name String
   box BigInt
   customer BigInt
   created_at DateTime
   updated_at DateTime
 
-  synch OZMapSych?
+  synch OZMapSync?
 
   @@map("drop_cable")
 }
