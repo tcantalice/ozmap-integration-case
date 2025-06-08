@@ -1,5 +1,7 @@
-export default interface Storage<Entity> {
-  save(entity: Entity): Promise<void>;
+import StorageState from '../data/storage-state.data';
 
-  findById(id: number): Promise<Entity | null>;
+export default interface Storage<Entity> {
+  save(data: StorageState<Entity>): Promise<void>;
+
+  findById(id: number): Promise<StorageState<Entity> | null>;
 }
