@@ -1,36 +1,55 @@
+import { State } from '../../data/state.data';
+import { Sync } from '../../data/sync.data';
 import Cable from '../../entities/cable.entity';
+import { SyncStatus } from '../../enums/sync-status.enum';
 import Manager from '../contracts/manager';
-import { State } from '../contracts/state';
 import Storage from '../contracts/storage';
+import StorageState from '../data/storage-state.data';
 
 export default class CableManager implements Manager<Cable> {
   constructor(private cableStorage: Storage<Cable>) {}
 
   async handleState(entity: Cable): Promise<State<Cable>> {
-    const state: State<Cable> = {
-      value: entity,
-      hasChanges: false,
-      isNew: false,
+    const result: State<Cable> = {
+      data: entity,
+      operation: 'ignored',
     };
 
-    const cableState = await this.cableStorage.findById(entity.id);
+    const savedState: StorageState<Cable> | null = await this.cableStorage.findById(entity.id);
 
-    if (cableState) {
-      if (cableState.hasDifference(entity)) {
-        this.cableStorage.save(entity);
+    if (savedState) {
+      if (savedState.data.hasDifference(entity)) {
+        this.registerState(entity);
 
-        state.hasChanges = true;
+        result.operation = 'updated';
       } else {
-        state.value = cableState;
+        result.data = savedState.data;
+        result.sync = savedState.sync
+          ? {
+              lastAttemptSync: savedState.sync.lastAttemptSync,
+              lastSyncStatus: savedState.sync.lastSyncStatus,
+              syncId: savedState.sync.syncId,
+            }
+          : result.sync;
       }
+    } else {
+      this.registerState(entity);
+
+      result.operation = 'created';
     }
 
-    if (!cableState) {
-      this.cableStorage.save(entity);
+    return result;
+  }
 
-      state.isNew = true;
-    }
+  async updateSync(entity: Cable, sync: Sync): Promise<void> {
+    await this.cableStorage.saveSync(entity.id, {
+      lastAttemptSync: new Date(),
+      lastSyncStatus: sync.synchronized ? SyncStatus.SUCCESS : SyncStatus.FAIL,
+      syncId: sync.syncId,
+    });
+  }
 
-    return state;
+  private async registerState(cable: Cable) {
+    await this.cableStorage.saveData(cable);
   }
 }
