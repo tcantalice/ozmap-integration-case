@@ -20,7 +20,7 @@ export class BoxType extends BaseSynchronizable {
   }
 }
 
-export class Box extends BaseSynchronizable {
+export default class Box extends BaseSynchronizable {
   constructor(
     public readonly id: number,
     public readonly name: string,
