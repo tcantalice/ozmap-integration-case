@@ -40,7 +40,47 @@ export default class BoxDatabaseStorage implements Storage<Box> {
       : null;
   }
 
-  async saveData(data: Box): Promise<void> {}
+  async saveData(data: Box): Promise<void> {
+    await this.client.box.upsert({
+      create: {
+        created_at: new Date(),
+        updated_at: new Date(),
+        isp_id: data.id,
+        location: {
+          latitude: data.loc.lat,
+          longitude: data.loc.lng,
+        },
+        name: data.name,
+        type: data.type,
+      },
+      update: {
+        location: {
+          latitude: data.loc.lat,
+          longitude: data.loc.lng,
+        },
+        name: data.name,
+        type: data.type,
+        updated_at: new Date(),
+      },
+      where: {
+        isp_id: data.id,
+      },
+    });
+  }
 
-  async saveSync(id: number, sync: SyncStorageState): Promise<void> {}
+  async saveSync(id: number, sync: SyncStorageState): Promise<void> {
+    this.client.box.update({
+      data: {
+        sync: {
+          ozmap_id: sync.syncId!,
+          ozmap_last_sync_date: sync.lastAttemptSync!,
+          ozmap_last_sync_situation:
+            sync.lastSyncStatus === SyncStatus.SUCCESS ? SyncSituation.SUCCESS : SyncSituation.FAIL,
+        },
+      },
+      where: {
+        isp_id: id,
+      },
+    });
+  }
 }
