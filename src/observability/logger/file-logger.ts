@@ -6,15 +6,23 @@ export default class FileLogger implements Contract {
   private readonly pino: Logger;
 
   constructor(config: LogConfig) {
-    this.pino = pino({
-      level: config.level,
-      transport: pino.transport({
-        target: 'pino/file',
-        options: {
-          destination: config.handler.path,
-        },
+    this.pino = pino(
+      pino.transport({
+        targets: [
+          {
+            level: config.level,
+            target: 'pino/file',
+            options: {
+              destination: config.handler.path,
+            },
+          },
+          {
+            level: config.level,
+            target: 'pino-pretty',
+          },
+        ],
       }),
-    });
+    );
   }
   info(message: string, context?: Record<string, any>): void {
     this.pino.info(message, context);
