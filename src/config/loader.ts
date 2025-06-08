@@ -1,17 +1,23 @@
 import { config } from 'dotenv';
 import type { Config } from './types';
 
-import z from 'zod/v4';
 import { envConfigSchema } from './schemas';
 
+class ConfigError extends Error {
+  constructor(cause: any) {
+    super('Failed to load configuration', { cause });
+  }
+}
+
 export const load = (): Config | never => {
-  config();
+  config({
+    path: '/workspace/.env',
+  });
 
   const result = envConfigSchema.safeParse(process.env);
 
   if (!result.success) {
-    console.error();
-    throw new Error(`Failed load configuration: ${z.treeifyError(result.error)}`);
+    throw new ConfigError(result.error);
   }
 
   return {
