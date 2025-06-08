@@ -37,7 +37,7 @@ model Box {
   location Location
   created_at DateTime
   updated_at DateTime
-  synch OZMapSync?
+  sync OZMapSync?
 
   @@map("box")
 }
@@ -52,7 +52,7 @@ model Cable {
   boxes BigInt[]
   created_at DateTime
   updated_at DateTime
-  synch OZMapSync?
+  sync OZMapSync?
 
   @@map("cable")
 }
@@ -64,7 +64,7 @@ model Customer {
   address String
   box BigInt
 
-  synch OZMapSync?
+  sync OZMapSync?
 
   @@map("customer")
 }
@@ -77,7 +77,7 @@ model DropCable {
   created_at DateTime
   updated_at DateTime
 
-  synch OZMapSync?
+  sync OZMapSync?
 
   @@map("drop_cable")
 }
