@@ -10,9 +10,7 @@ class ConfigError extends Error {
 }
 
 export const load = (): Config | never => {
-  config({
-    path: '/workspace/.env',
-  });
+  config();
 
   const result = envConfigSchema.safeParse(process.env);
 
