@@ -23,7 +23,7 @@ export default class Service {
   }
 
   async run(): Promise<void> {
-    this.onStart();
+    await this.onStart();
 
     while (this.running) {
       try {
@@ -33,7 +33,6 @@ export default class Service {
       } catch (err) {
         ObservabilityManager.logger().error('Error during execution', { error: err });
       }
-
       await this.delay();
     }
   }
@@ -54,7 +53,7 @@ export default class Service {
     }
   }
 
-  protected onStart() {
+  protected async onStart() {
     ObservabilityManager.logger().info('Starting service');
 
     this.running = true;
