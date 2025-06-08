@@ -59,6 +59,7 @@ model Cable {
 
 model Customer {
   id String @id @default(uuid()) @map("_id") @db.ObjectId
+  isp_id BigInt @unique
   code String
   name String
   address String
@@ -71,6 +72,7 @@ model Customer {
 
 model DropCable {
   id String @id @default(uuid()) @map("_id") @db.ObjectId
+  isp_id BigInt @unique
   name String
   box BigInt
   customer BigInt
