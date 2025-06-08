@@ -1,7 +1,7 @@
 import { z } from 'zod/v4';
 
 export const serviceSchema = z.object({
-  SERVICE_INTERVAL: z.int().default(5),
+  SERVICE_INTERVAL: z.coerce.number().default(5),
 });
 
 export const importerSchema = z.object({
