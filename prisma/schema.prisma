@@ -64,6 +64,8 @@ model Customer {
   name String
   address String
   box BigInt
+  created_at DateTime
+  updated_at DateTime
 
   sync OZMapSync?
 
