@@ -18,7 +18,7 @@ export default class CustomerDatabaseStorage implements Storage<Customer> {
 
   async findById(id: number): Promise<StorageState<Customer> | null> {
     const customerModel = await this.client.customer.findUnique({
-      where: { isp_id: id },
+      where: { isp_id: BigInt(id) },
     });
 
     if (!customerModel) return null;
