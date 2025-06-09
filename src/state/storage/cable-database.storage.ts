@@ -14,7 +14,7 @@ export default class CableDatabaseStorage implements Storage<Cable> {
 
   async findById(id: number): Promise<StorageState<Cable> | null> {
     const instance = await this.client.cable.findUnique({
-      where: { isp_id: id },
+      where: { isp_id: BigInt(id) },
     });
 
     return instance

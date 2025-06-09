@@ -1,23 +1,21 @@
-import { Axios, AxiosResponse, isAxiosError } from 'axios';
+import axios, { type Axios, AxiosResponse, isAxiosError } from 'axios';
 import { ClientRequest } from 'node:http';
+import BaseError, { ErrorSeverity } from '../../error/base.error';
 import ISPServiceGateway from '../contracts/isp-service-gateway';
 import { ISPBoxData, ISPCableData, ISPCustomerData, ISPDropCableData } from '../data';
 
-class RequestError extends Error {
-  constructor(
-    message: string,
-    cause: Error,
-    private requestData: object,
-  ) {
-    super(message, { cause });
+class RequestError extends BaseError {
+  constructor(message: string, cause: Error, requestData: object) {
+    super(message, { request: requestData }, cause);
+    this.name = 'ISPHttpGatewayRequestError';
   }
 
-  getContext(): object {
-    return { request: this.requestData };
+  get severity(): ErrorSeverity {
+    return 'high';
   }
 }
 
-class ResponseError extends Error {
+class ResponseError extends BaseError {
   constructor(
     message: string,
     cause: Error,
@@ -25,21 +23,23 @@ class ResponseError extends Error {
     private responseData: object,
     private requestData: object,
   ) {
-    super(message, { cause });
+    super(message, { status: statusHttp, response: responseData, request: requestData }, cause);
+
+    this.name = 'ISPHttpGatewayResponseError';
   }
 
-  getContext(): object {
-    return {
-      status: this.statusHttp,
-      response: this.responseData,
-      request: this.requestData,
-    };
+  get severity(): ErrorSeverity {
+    return 'high';
   }
 }
 
-class UnknowIntegrationError extends Error {
+class UnknowIntegrationError extends BaseError {
   constructor(message: string, cause: Error) {
-    super(message, { cause });
+    super(message, undefined, cause);
+  }
+
+  get severity(): ErrorSeverity {
+    return 'high';
   }
 }
 
@@ -47,8 +47,9 @@ export default class ISPServiceHttpGateway implements ISPServiceGateway {
   private __httpClient: Axios; // TODO: abstrair uso do Axios
 
   constructor(url: string) {
-    this.__httpClient = new Axios({
+    this.__httpClient = axios.create({
       baseURL: url,
+      responseType: 'json',
     });
   }
 
@@ -89,12 +90,12 @@ export default class ISPServiceHttpGateway implements ISPServiceGateway {
           { headers: request.getHeaders(), host: request.host, path: request.path },
         );
       } else if (err.request) {
-        const request = err.request as ClientRequest;
+        const config = err.config!;
 
         throw new RequestError('Attempt to request ISP failed', err, {
-          headers: request.getHeaders(),
-          host: request.host,
-          path: request.path,
+          headers: config.headers,
+          host: config.baseURL,
+          path: config.url,
         });
       }
     }

@@ -9,5 +9,6 @@
   "eslint.validate": ["typescript"],
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "conventionalCommits.scopes": ["importer", "deps", "models"]
 }

@@ -15,7 +15,7 @@ export default class BoxDatabaseStorage implements Storage<Box> {
 
   async findById(id: number): Promise<StorageState<Box> | null> {
     const instance = await this.client.box.findUnique({
-      where: { isp_id: id },
+      where: { isp_id: BigInt(id) },
     });
 
     return instance

@@ -1,8 +1,11 @@
 import { Config } from './config/types';
 import IntegrationController from './core/integration.controller';
+import ErrorHandler from './error/handler';
+import OZMapMockGateway from './exporter/gateways/ozmap-mock-gateway';
+import OZMapExporter from './exporter/ozmap-exporter';
 import ISPServiceHttpGateway from './importer/gateways/isp-service-http-gateway';
 import ISPImporter from './importer/isp-importer';
-import ObservabilityManager from './observability/manager';
+import ObservabilityManager from './observability/provider';
 
 export default class Service {
   private readonly controller: IntegrationController;
@@ -12,14 +15,18 @@ export default class Service {
 
   private currentExecution: Promise<void> | null;
 
-  constructor(private readonly __config: Config) {
+  constructor(
+    private readonly __config: Config,
+    private readonly __errorHandler: ErrorHandler,
+  ) {
     this.running = false;
     this.shuttingDown = false;
     this.currentExecution = null;
 
     const importer = new ISPImporter(new ISPServiceHttpGateway(__config.importer.gateway.url));
+    const exporter = new OZMapExporter(new OZMapMockGateway());
 
-    this.controller = new IntegrationController(importer);
+    this.controller = new IntegrationController(importer, exporter);
   }
 
   async run(): Promise<void> {
@@ -31,8 +38,9 @@ export default class Service {
 
         await this.currentExecution;
       } catch (err) {
-        ObservabilityManager.logger().error('Error during execution', { error: err });
+        this.__errorHandler.handle(err);
       }
+
       await this.delay();
     }
   }
@@ -49,7 +57,7 @@ export default class Service {
 
       await this.onFinish();
     } catch (error) {
-      ObservabilityManager.logger().error('Error during shutdown', { error });
+      this.__errorHandler.handle(error);
     }
   }
 

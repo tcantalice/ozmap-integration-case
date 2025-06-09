@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES2022",                // Node 20 suporta ES2022+
-    "module": "CommonJS",              // ou "ESNext" se for usar ES Modules
+    "target": "ES2022",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "lib": ["ES2022"],
     "allowJs": false,

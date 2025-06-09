@@ -1,6 +1,8 @@
 import { load as loadConfig } from './config/loader';
-import ObservabilityManager from './observability/manager';
+import ErrorHandler from './error/handler';
+import ObservabilityManager from './observability/provider';
 import Service from './service';
+import StateStorageProvider from './state/providers/state-storage.provider';
 
 async function shutdownGracefully(service: Service, exitCode = 0) {
   try {
@@ -12,16 +14,21 @@ async function shutdownGracefully(service: Service, exitCode = 0) {
 }
 
 function registerListeners(service: Service) {
-  process.on('SIGINT', () => shutdownGracefully(service, 0));
-  process.on('SIGTERM', () => shutdownGracefully(service, 0));
+  process.once('SIGINT', () => shutdownGracefully(service, 0));
+  process.once('SIGTERM', () => shutdownGracefully(service, 0));
+  process.once('uncaughtException', () => shutdownGracefully(service, 1));
+  process.once('unhandledRejection', () => shutdownGracefully(service, 1));
 }
 
 async function bootstrap() {
   const config = loadConfig();
 
   ObservabilityManager.init(config);
+  StateStorageProvider.init();
 
-  const service = new Service(config);
+  const errorHandler = new ErrorHandler();
+
+  const service = new Service(config, errorHandler);
 
   registerListeners(service);
 
