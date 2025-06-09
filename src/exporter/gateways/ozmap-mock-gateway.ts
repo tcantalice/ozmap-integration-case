@@ -7,11 +7,11 @@ import randomId from '../utils/random-id';
 export default class OZMapMockGateway implements OZMapGateway {
   constructor() {}
 
-  async createBoxResource(data: OZMapBoxInputData): Promise<OZMapBoxOutputData> {
+  async createBoxResource(_: OZMapBoxInputData): Promise<OZMapBoxOutputData> {
     return { id: randomId() };
   }
 
-  async createCable(data: OZMapCableInputData): Promise<OZMapCableOutputData> {
+  async createCable(_: OZMapCableInputData): Promise<OZMapCableOutputData> {
     return { id: randomId() };
   }
 

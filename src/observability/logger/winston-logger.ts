@@ -8,10 +8,7 @@ export default class WinstonLogger implements Contract {
   constructor(config: LogConfig) {
     this.logger = createLogger({
       level: config.level,
-      transports: [
-        this.makeFileTransporter(config),
-        // this.makeConsoleTransporter(config)
-      ],
+      transports: [this.makeFileTransporter(config), this.makeConsoleTransporter(config)],
     });
   }
 
@@ -21,7 +18,7 @@ export default class WinstonLogger implements Contract {
     });
   }
 
-  private makeConsoleTransporter(config: LogConfig) {
+  private makeConsoleTransporter(_: LogConfig) {
     return new transports.Console();
   }
 

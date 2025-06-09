@@ -10,6 +10,6 @@ export const CableToCableInputAdapter = (cable: Cable): OZMapCableInputData => (
   poles: cable.path.locations.map((loc) => ({ lat: loc.lat, lng: loc.lng })),
   project: randomId(),
   type: randomId(),
-  boxA: cable.connectionA.synchId!,
-  boxB: cable.connectionB.synchId!,
+  boxA: cable.connectionA!.synchId!,
+  boxB: cable.connectionB!.synchId!,
 });
