@@ -1,0 +1,11 @@
+.editorconfig
+.env.example
+.gitattributes
+.gitignore
+.prettier
+.yarnrc.yml
+commitlint.config.cjs
+db.json
+README.md
+.vscode
+.yarn

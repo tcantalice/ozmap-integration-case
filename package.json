@@ -1,8 +1,6 @@
 {
   "name": "ozmap-integration-case",
-  "version": "0.0.1",
-  "type": "module",
-  "packageManager": "yarn@4.6.0",
+  "version": "1.0.0",
   "repository": {
     "url": "https://github.com/tcantalice/ozmap-integration-case"
   },
@@ -10,25 +8,33 @@
     "prepare": "husky install",
     "commit": "cz",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
+    "lint": "eslint --ext .ts ./src ",
+    "lint:fix": "eslint ./src --ext .ts --fix",
     "format": "prettier --write \"src/**/*.ts\"",
-    "build": "tsc -p tsconfig.build.json"
+    "build": "tsc -p tsconfig.build.json",
+    "api:mock": "json-server --watch db.json --port 4000"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@eslint/js": "^9.28.0",
+    "@types/node": "^22.15.30",
+    "@types/typescript": "^2.0.0",
+    "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^8.33.1",
     "@typescript-eslint/parser": "^8.33.1",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.28.0",
     "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.4.1",
     "eslint-plugin-unused-imports": "^4.1.4",
     "globals": "^16.2.0",
     "husky": "^9.1.7",
+    "json-server": "^1.0.0-beta.3",
     "prettier": "^3.5.3",
+    "prisma": "^6.9.0",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.33.1"
   },
@@ -36,5 +42,14 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "dependencies": {
+    "@ozmap/ozmap-sdk": "^1.1.0",
+    "@prisma/client": "^6.9.0",
+    "axios": "^1.9.0",
+    "dotenv": "^16.5.0",
+    "pino-pretty": "^13.0.0",
+    "winston": "^3.17.0",
+    "zod": "^3.25.56"
   }
 }

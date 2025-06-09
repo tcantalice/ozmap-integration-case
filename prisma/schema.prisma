@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type Location {
+  latitude Float
+  longitude Float
+}
+
+type OZMapSync {
+  ozmap_id String?
+  ozmap_last_sync_date DateTime?
+  ozmap_last_sync_situation SyncSituation
+}
+
+enum SyncSituation {
+  SUCCESS
+  FAIL
+}
+
+model Box {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  isp_id BigInt @unique
+  name String
+  type String
+  location Location
+  created_at DateTime
+  updated_at DateTime
+  sync OZMapSync?
+
+  @@map("box")
+}
+
+model Cable {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  isp_id BigInt @unique
+  name String
+  paths Location[]
+  type String
+  capacity Int
+  boxes BigInt[]
+  created_at DateTime
+  updated_at DateTime
+  sync OZMapSync?
+
+  @@map("cable")
+}
+
+model Customer {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  isp_id BigInt @unique
+  code String
+  name String
+  address String
+  box BigInt
+  created_at DateTime
+  updated_at DateTime
+
+  sync OZMapSync?
+
+  @@map("customer")
+}
+
+model DropCable {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  isp_id BigInt @unique
+  name String
+  box BigInt
+  customer BigInt
+  created_at DateTime
+  updated_at DateTime
+
+  sync OZMapSync?
+
+  @@map("drop_cable")
+}
