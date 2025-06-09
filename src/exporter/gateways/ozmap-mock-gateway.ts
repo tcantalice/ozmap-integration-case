@@ -4,7 +4,7 @@ import { OZMapCableInputData, OZMapCableOutputData } from '../data/ozmap-cable.d
 import { OZMapPropertyInputData, OZMapPropertyOutputData } from '../data/ozmap-property.data';
 import randomId from '../utils/random-id';
 
-export default class OZMapSDKGateway implements OZMapGateway {
+export default class OZMapMockGateway implements OZMapGateway {
   constructor() {}
 
   async createBoxResource(data: OZMapBoxInputData): Promise<OZMapBoxOutputData> {
