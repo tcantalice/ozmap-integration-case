@@ -1,45 +1,71 @@
+import { Sync } from '../data/sync.data';
 import Box from '../entities/box.entity';
 import Cable from '../entities/cable.entity';
 import Customer from '../entities/customer.entity';
-import DropCable from '../entities/drop-cable.entity';
+import { Logger } from '../observability/contracts/logger';
+import ObservabilityProvider from '../observability/provider';
 import { BoxToBoxInputAdapter } from './adapters/box-to-box-input.adapter';
 import { CableToCableInputAdapter } from './adapters/cable-to-cable-input.adapter';
 import { CustomerToPropertyInputAdapter } from './adapters/customer-to-property-input.adapter';
-import { DropCableToCableInputAdapter } from './adapters/drop-cable-to-cable-input.adapter';
 import OZMapGateway from './contracts/ozmap-gateway';
 
 export default class OZMapExporter {
-  constructor(private gateway: OZMapGateway) {}
+  private readonly logger: Logger;
 
-  async synchCustomer(customer: Customer): Promise<Customer> {
-    const result = await this.gateway.createProperty(CustomerToPropertyInputAdapter(customer));
-
-    customer.synchronize(result.client.id);
-
-    return customer;
+  constructor(private gateway: OZMapGateway) {
+    this.logger = ObservabilityProvider.logger();
   }
 
-  async synchBox(box: Box): Promise<Box> {
-    const result = await this.gateway.createBoxResource(BoxToBoxInputAdapter(box));
+  async syncCustomer(customer: Customer): Promise<Sync> {
+    let result: Sync = { synchronized: false };
 
-    box.synchronize(result.id);
+    try {
+      const {
+        client: { id: syncId },
+      } = await this.gateway.createProperty(CustomerToPropertyInputAdapter(customer));
 
-    return box;
+      result.syncId = syncId;
+    } catch (err) {
+      this.logger.warning(`The resource Customer<${customer.id}> has not been synchronized`, {
+        customer: customer.id,
+        cause: err,
+      });
+    }
+
+    return result;
   }
 
-  async synchDropCable(cable: DropCable): Promise<DropCable> {
-    const result = await this.gateway.createCable(DropCableToCableInputAdapter(cable));
+  async syncBox(box: Box): Promise<Sync> {
+    let result: Sync = { synchronized: false };
 
-    cable.synchronize(result.id);
+    try {
+      const { id: syncId } = await this.gateway.createBoxResource(BoxToBoxInputAdapter(box));
 
-    return cable;
+      result.syncId = syncId;
+    } catch (err) {
+      this.logger.warning(`The resource Box<${box.id}> has not been synchronized`, {
+        box: box.id,
+        cause: err,
+      });
+    }
+
+    return result;
   }
 
-  async synchCable(cable: Cable): Promise<Cable> {
-    const result = await this.gateway.createCable(CableToCableInputAdapter(cable));
+  async syncCable(cable: Cable): Promise<Sync> {
+    let result: Sync = { synchronized: false };
 
-    cable.synchronize(result.id);
+    try {
+      const { id: syncId } = await this.gateway.createCable(CableToCableInputAdapter(cable));
 
-    return cable;
+      result.syncId = syncId;
+    } catch (err) {
+      this.logger.warning(`The resource Cable<${cable.id}> has not been synchronized`, {
+        cable: cable.id,
+        cause: err,
+      });
+    }
+
+    return result;
   }
 }
