@@ -1,7 +1,6 @@
 {
   "name": "ozmap-integration-case",
   "version": "0.0.1",
-  "packageManager": "yarn@4.6.0",
   "repository": {
     "url": "https://github.com/tcantalice/ozmap-integration-case"
   },
