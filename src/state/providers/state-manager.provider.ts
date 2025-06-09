@@ -1,5 +1,6 @@
 import Box from '../../entities/box.entity';
 import Cable from '../../entities/cable.entity';
+import Customer from '../../entities/customer.entity';
 import Manager from '../contracts/manager';
 import BoxManager from '../manager/box.manager';
 import CableManager from '../manager/cable.manager';
