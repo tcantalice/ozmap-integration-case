@@ -56,53 +56,56 @@ export default class OZMapSDKGateway implements OZMapGateway {
   }
 
   async createBoxResource(data: OZMapBoxInputData): Promise<OZMapBoxOutputData> {
-    const createdBox: OZBox = await this.sdk.box.create({
-      implanted: data.implanted,
-      boxType: data.type,
-      name: data.name,
-      hierarchyLevel: data.hierarchyLevel,
-      coords: [data.latitude, data.longitude],
-      project: data.project,
-    });
-
-    return { id: createdBox.id as string };
+    return this.sdk.box
+      .create({
+        implanted: data.implanted,
+        boxType: data.type,
+        name: data.name,
+        hierarchyLevel: data.hierarchyLevel,
+        coords: [data.latitude, data.longitude],
+        project: data.project,
+      })
+      .then((box: OZBox) => ({ id: box.id as string }))
+      .catch((err) => this.handleError(err));
   }
 
   async createCable(data: OZMapCableInputData): Promise<OZMapCableOutputData> {
-    const createdCable: OZCable = await this.sdk.cable.create({
-      cableType: data.type,
-      project: data.project,
-      implanted: data.implanted,
-      hierarchyLevel: data.hierarchyLevel,
-      poles: data.poles,
-      boxA: data.boxA,
-      boxB: data.boxB,
-      name: data.name,
-    });
-
-    return { id: createdCable.id as string };
+    return this.sdk.cable
+      .create({
+        cableType: data.type,
+        project: data.project,
+        implanted: data.implanted,
+        hierarchyLevel: data.hierarchyLevel,
+        poles: data.poles,
+        boxA: data.boxA,
+        boxB: data.boxB,
+        name: data.name,
+      })
+      .then((cable: OZCable) => ({ id: cable.id as string }))
+      .catch((err) => this.handleError(err));
   }
 
   async createProperty(data: OZMapPropertyInputData): Promise<OZMapPropertyOutputData> {
-    const createdProperty: OZProperty = await this.sdk.property.create({
-      project: data.project,
-      address: data.address,
-      box: data.box,
-      client: {
-        code: data.client.code,
-        name: data.client.name,
-        external_id: data.client.externalId,
-        implanted: data.client.implanted,
-      },
-    });
-
-    return {
-      id: createdProperty.id as string,
-      client: {
-        id: createdProperty.client.id as string,
-        code: data.client.code,
-      },
-    };
+    return this.sdk.property
+      .create({
+        project: data.project,
+        address: data.address,
+        box: data.box,
+        client: {
+          code: data.client.code,
+          name: data.client.name,
+          external_id: data.client.externalId,
+          implanted: data.client.implanted,
+        },
+      })
+      .then((property: OZProperty) => ({
+        id: property.id as string,
+        client: {
+          id: property.client.id as string,
+          code: data.client.code,
+        },
+      }))
+      .catch((err) => this.handleError(err));
   }
 
   private handleError(err: any): never {

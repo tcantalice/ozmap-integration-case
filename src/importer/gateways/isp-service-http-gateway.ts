@@ -19,9 +19,9 @@ class ResponseError extends BaseError {
   constructor(
     message: string,
     cause: Error,
-    private statusHttp: number,
-    private responseData: object,
-    private requestData: object,
+    statusHttp: number,
+    responseData: object,
+    requestData: object,
   ) {
     super(message, { status: statusHttp, response: responseData, request: requestData }, cause);
 
