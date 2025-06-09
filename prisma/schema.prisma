@@ -30,7 +30,7 @@ enum SyncSituation {
 }
 
 model Box {
-  id String @id @default(uuid()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
   isp_id BigInt @unique
   name String
   type String
@@ -43,7 +43,7 @@ model Box {
 }
 
 model Cable {
-  id String @id @default(uuid()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
   isp_id BigInt @unique
   name String
   paths Location[]
@@ -58,7 +58,7 @@ model Cable {
 }
 
 model Customer {
-  id String @id @default(uuid()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
   isp_id BigInt @unique
   code String
   name String
@@ -73,7 +73,7 @@ model Customer {
 }
 
 model DropCable {
-  id String @id @default(uuid()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
   isp_id BigInt @unique
   name String
   box BigInt
