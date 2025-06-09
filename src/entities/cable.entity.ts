@@ -81,4 +81,12 @@ export default class Cable extends BaseSynchronizable {
   get connectionB(): Box | null {
     return this.__connectionB;
   }
+
+  connectA(box: Box) {
+    this.__connectionA = box;
+  }
+
+  connectB(box: Box) {
+    this.__connectionB = box;
+  }
 }
