@@ -38,17 +38,20 @@ class CablePath {
 
 export default class Cable extends BaseSynchronizable {
   private readonly __path: CablePath;
+  private __connectionA: Box | null;
+  private __connectionB: Box | null;
 
   constructor(
     public readonly id: number,
     public readonly name: string,
     public readonly capacity: number,
-    public readonly connectionA: Box,
-    public readonly connectionB: Box,
+    public readonly type: string,
   ) {
     super();
 
     this.__path = new CablePath();
+    this.__connectionA = null;
+    this.__connectionB = null;
   }
 
   addPoint(latitude: number, longitude: number) {
@@ -69,5 +72,13 @@ export default class Cable extends BaseSynchronizable {
       this.capacity !== other.capacity ||
       !this.path.equalsTo(other.path)
     );
+  }
+
+  get connectionA(): Box | null {
+    return this.__connectionA;
+  }
+
+  get connectionB(): Box | null {
+    return this.__connectionB;
   }
 }
