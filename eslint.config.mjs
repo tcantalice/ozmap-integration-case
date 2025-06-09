@@ -1,39 +1,34 @@
+import eslintRecommended from '@eslint/js';
 import importPlugin from 'eslint-plugin-import';
-import unusedImports from 'eslint-plugin-unused-imports';
+import prettierPlugin from 'eslint-plugin-prettier';
 import tseslint from 'typescript-eslint';
 
-/**
- * Configuração flat ESLint 9 com TypeScript.
- */
 export default [
+  eslintRecommended.configs.recommended,
+
   ...tseslint.config({
     files: ['**/*.ts'],
     languageOptions: {
+      parser: tseslint.parser,
       sourceType: 'module',
-    },
-    plugins: {
-      import: importPlugin,
-      'unused-imports': unusedImports,
-    },
-    rules: {
-      'no-console': 'warn',
-      'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': 'off',
-
-      'unused-imports/no-unused-imports': 'error',
-      'unused-imports/no-unused-vars': [
-        'warn',
-        { vars: 'all', varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
-      ],
-
-      'import/order': [
-        'warn',
-        {
-          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
-          alphabetize: { order: 'asc', caseInsensitive: true },
-          'newlines-between': 'always',
-        },
-      ],
+      parserOptions: {
+        project: './tsconfig.json', // necessário para resolver imports absolutos
+      },
     },
   }),
+
+  {
+    plugins: { import: importPlugin },
+    rules: {
+      ...importPlugin.configs.recommended.rules,
+      ...importPlugin.configs.typescript.rules,
+    },
+  },
+
+  {
+    plugins: { prettier: prettierPlugin },
+    rules: {
+      'prettier/prettier': 'warn', // ativa prettier como regra
+    },
+  },
 ];
