@@ -12,9 +12,13 @@ export default class ErrorHandler {
   }
 
   handle(err: any) {
-    err = isTrusted(err) ? err : new UnknownError(err);
+    const processedError = isTrusted(err) ? err : new UnknownError(err);
 
-    this.report(err);
+    this.report(processedError);
+
+    if (processedError.severity == 'critical' || processedError.severity == 'high') {
+      throw processedError;
+    }
   }
 
   private report(error: BaseError) {
